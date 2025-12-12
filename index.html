@@ -9,7 +9,7 @@
 		* {
 			box-sizing: border-box;
 		}
-		
+
 		body {
 			margin: 0;
 			padding: 0;
@@ -25,7 +25,7 @@
 
 		h1 {
 			font-size: 36pt;
-			margin-top: 20vh;
+			margin-top: 10vh;
 			font-weight: normal;
 			font-family: serif;
 			text-align: center;
@@ -129,6 +129,17 @@
 			}
 		}
 
+		li.segment.thumb::after {
+			content: '👎';
+			position: absolute;
+			top: 40%;
+			right: 1ch;
+			font-size: 4cqi;
+			transform-origin: center center;
+			transform: rotate(calc((var(--rotation) + var(--offset)) * -1 - 180deg));
+			transition: 5s all ease-out;
+		}
+
 		div.line {
 			background: black;
 			grid-area: 1 / -1;
@@ -151,20 +162,20 @@
 			<div class="wheel-of-fortune" id="wheel-of-fortune">
 				<ul class="segments">
 					<li class="segment" style="--_idx: 1;">Nej</li>
-					<li class="segment" style="--_idx: 2;">Nope</li>
+					<li class="segment" style="--_idx: 2;">Måske imorgen</li>
 					<li class="segment" style="--_idx: 3;">Ikke idag</li>
-					<li class="segment" style="--_idx: 4;">Hmmmm, nej</li>
+					<li class="segment" style="--_idx: 4;">...</li>
 					<li class="segment" style="--_idx: 5;">Prøv igen senere</li>
-					<li class="segment" style="--_idx: 6;">Måske imorgen</li>
-					<li class="segment" style="--_idx: 7;">👎</li>
+					<li class="segment" style="--_idx: 6;">Nope</li>
+					<!-- <li class="segment thumb" style="--_idx: 7;"></li> -->
+					<li class="segment" style="--_idx: 7;">Hmmmm, nej</li>
 					<li class="segment ja" style="--_idx: 12;">Ja da!</li>
 					<li class="segment" style="--_idx: 8;">Nada</li>
 					<li class="segment" style="--_idx: 9;">Desværre ikke</li>
 					<li class="segment" style="--_idx: 10;">Nah</li>
 					<li class="segment" style="--_idx: 11;">Nix</li>
-		
 				</ul>
-				
+
 				<div class="line" style="--__idx: 1"></div>
 				<div class="line" style="--__idx: 2"></div>
 				<div class="line" style="--__idx: 3"></div>
@@ -203,18 +214,6 @@
 
 		const wheelOfFortuneContainer = document.getElementById('wheel-of-fortune');
 		wheelOfFortuneContainer.style.setProperty('--offset', offset + 'deg');
-		console.log('Offset: ', offset);
-		
-		
-		const answerElement = document.getElementById('answer');
-
-		// if (isFirstFridayOfMonth()) {
-		// 	answerElement.textContent = 'ja';
-		// 	answerElement.className = 'yes';
-		// } else {
-		// 	answerElement.textContent = 'nej';
-		// 	answerElement.className = 'no';
-		// }
 	</script>
 </body>
 
