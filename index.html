@@ -1,74 +1,221 @@
 <!DOCTYPE html>
 <html lang="da">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Er der spins?</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #000000;
-            display: flex;
-            /* justify-content: center; */
-            align-items: center;
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Er der spins?</title>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+		
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #000000;
+			display: flex;
+			/* justify-content: center; */
+			align-items: center;
 			flex-direction: column;
-            height: 100vh;
-            font-family: Arial, sans-serif;
+			height: 100vh;
+			font-family: Arial, sans-serif;
 			color: white;
-        }
+		}
 
 		h1 {
 			font-size: 36pt;
 			margin-top: 20vh;
 			font-weight: normal;
 			font-family: serif;
+			text-align: center;
 		}
-        
-        #answer {
-            font-size: 48pt;
-            font-weight: bold;
-            text-align: center;
-        }
-        
-        .yes {
-            color: #00ff00;
-        }
-        
-        .no {
-            color: #ff0000;
-        }
-    </style>
+
+		#answer {
+			font-size: 48pt;
+			font-weight: bold;
+			text-align: center;
+		}
+
+		.yes {
+			color: #00ff00;
+		}
+
+		.no {
+			color: #ff0000;
+		}
+
+		/* Lykke hjul */
+		:root {
+			--_items: 12;
+		}
+
+		.container {
+			width: min(90vw, 500px);
+			margin-top: 20px;
+			position: relative;
+
+			&::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				right: 50%;
+				transform: translate(50%, -70%);
+				width: 0;
+				height: 0;
+				border-left: 10px solid transparent;
+				border-right: 10px solid transparent;
+				border-top: 30px solid white;
+				z-index: 10;
+			}
+		}
+
+		.overflow-container {
+			width: 100%;
+			overflow: hidden;
+		}
+
+		.wheel-of-fortune {
+			--rotation: 0deg;
+			--offset: 0deg;
+
+			width: 100%;
+			transition: 5s all ease-out;
+			transform: rotate(calc(var(--rotation) + var(--offset)));
+			border: 3px solid black;
+			border-radius: 50%;
+			overflow: hidden;
+
+			@starting-style {
+				--rotation: 3000deg;
+			}
+		}
+
+		.segments {
+			all: unset;
+			aspect-ratio: 1 / 1;
+			background: black;
+			container-type: inline-size;
+			direction: ltr;
+			display: grid;
+			place-content: center end;
+			width: 100%;
+			clip-path: inset(0 0 0 0 round 50%);
+			position: relative;
+		}
+
+		li.segment {
+			box-sizing: border-box;
+			align-content: center;
+			/* background: hsl(calc(360deg / var(--_items) * calc(var(--_idx))), 100%, 75%); */
+			background-color: black;
+			clip-path: polygon(-2px 50%, 100% 0, 101% 100%);
+			/* clip-path: polygon(0% 0, 101% 49.5%, 0% 100%); */
+			display: grid;
+			font-size: 4cqi;
+			grid-area: 1 / -1;
+			aspect-ratio: 1/calc(2*tan(181deg/var(--_items)));
+			list-style: none;
+			padding-right: 1ch;
+			text-align: right;
+			rotate: calc(360deg / var(--_items) * calc(var(--_idx) - 1));
+			transform-origin: center left;
+			width: 50cqi;
+
+			background-color: red;
+
+			&.ja {
+				background-color: green;
+			}
+		}
+
+		div.line {
+			background: black;
+			grid-area: 1 / -1;
+			height: 3px;
+			list-style: none;
+			transform: rotate(calc(360deg / var(--_items) * calc(var(--__idx) - 1) + (180deg / var(--_items))));
+			width: 110%;
+			position: absolute;
+			top: calc(50% - 1.5px);
+			left: -5%;
+		}
+	</style>
 </head>
+
 <body>
-	<h1>Er der spins?</h1>
-    <h2 id="answer"></h2>
-    
-    <script>
-        function isFirstFridayOfMonth() {
-            const today = new Date();
-            const dayOfWeek = today.getDay(); // 0 = Sunday, 5 = Friday
-            const dayOfMonth = today.getDate();
-            
-            // Check if today is Friday
-            if (dayOfWeek !== 5) {
-                return false;
-            }
-            
-            // Check if this is the first Friday
-            // The first Friday must be between day 1 and day 7
-            return dayOfMonth >= 1 && dayOfMonth <= 7;
-        }
-        
-        const answerElement = document.getElementById('answer');
-        
-        if (isFirstFridayOfMonth()) {
-            answerElement.textContent = 'ja';
-            answerElement.className = 'yes';
-        } else {
-            answerElement.textContent = 'nej';
-            answerElement.className = 'no';
-        }
-    </script>
+	<h1>Er der spins i datbar?</h1>
+
+	<div class="container">
+		<div class="overflow-container">
+			<div class="wheel-of-fortune" id="wheel-of-fortune">
+				<ul class="segments">
+					<li class="segment" style="--_idx: 1;">Nej</li>
+					<li class="segment" style="--_idx: 2;">Nope</li>
+					<li class="segment" style="--_idx: 3;">Ikke idag</li>
+					<li class="segment" style="--_idx: 4;">Hmmmm, nej</li>
+					<li class="segment" style="--_idx: 5;">Prøv igen senere</li>
+					<li class="segment" style="--_idx: 6;">Måske imorgen</li>
+					<li class="segment" style="--_idx: 7;">👎</li>
+					<li class="segment ja" style="--_idx: 12;">Ja da!</li>
+					<li class="segment" style="--_idx: 8;">Nada</li>
+					<li class="segment" style="--_idx: 9;">Desværre ikke</li>
+					<li class="segment" style="--_idx: 10;">Nah</li>
+					<li class="segment" style="--_idx: 11;">Nix</li>
+		
+				</ul>
+				
+				<div class="line" style="--__idx: 1"></div>
+				<div class="line" style="--__idx: 2"></div>
+				<div class="line" style="--__idx: 3"></div>
+				<div class="line" style="--__idx: 4"></div>
+				<div class="line" style="--__idx: 5"></div>
+				<div class="line" style="--__idx: 6"></div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function isFirstFridayOfMonth() {
+			const today = new Date();
+			const dayOfWeek = today.getDay(); // 0 = Sunday, 5 = Friday
+			const dayOfMonth = today.getDate();
+
+			// Check if today is Friday
+			if (dayOfWeek !== 5) {
+				return false;
+			}
+
+			// Check if this is the first Friday
+			// The first Friday must be between day 1 and day 7
+			return dayOfMonth >= 1 && dayOfMonth <= 7;
+		}
+
+		const noOffsets = [
+			0, 30, 60, 90, 120, 150, 180, 210, 240, 270, /* 300 */, 330
+		];
+
+		const yesOffset = 300;
+
+		const offset = isFirstFridayOfMonth() ?
+			yesOffset :
+			noOffsets[Math.floor(Math.random() * noOffsets.length)];
+
+		const wheelOfFortuneContainer = document.getElementById('wheel-of-fortune');
+		wheelOfFortuneContainer.style.setProperty('--offset', offset + 'deg');
+		console.log('Offset: ', offset);
+		
+		
+		const answerElement = document.getElementById('answer');
+
+		// if (isFirstFridayOfMonth()) {
+		// 	answerElement.textContent = 'ja';
+		// 	answerElement.className = 'yes';
+		// } else {
+		// 	answerElement.textContent = 'nej';
+		// 	answerElement.className = 'no';
+		// }
+	</script>
 </body>
+
 </html>
