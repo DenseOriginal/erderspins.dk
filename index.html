@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Er der spins?</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        
+        #answer {
+            font-size: 20vw;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .yes {
+            color: #00ff00;
+        }
+        
+        .no {
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <div id="answer"></div>
+    
+    <script>
+        function isFirstFridayOfMonth() {
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 = Sunday, 5 = Friday
+            const dayOfMonth = today.getDate();
+            
+            // Check if today is Friday
+            if (dayOfWeek !== 5) {
+                return false;
+            }
+            
+            // Check if this is the first Friday
+            // The first Friday must be between day 1 and day 7
+            return dayOfMonth >= 1 && dayOfMonth <= 7;
+        }
+        
+        const answerElement = document.getElementById('answer');
+        
+        if (isFirstFridayOfMonth()) {
+            answerElement.textContent = 'ja';
+            answerElement.className = 'yes';
+        } else {
+            answerElement.textContent = 'nej';
+            answerElement.className = 'no';
+        }
+    </script>
+</body>
+</html>
